@@ -6,7 +6,7 @@ const { series, rimraf, } = require('nps-utils');
 
 module.exports = {
     scripts: {
-        default: 'nps start',
+        default: 'nps serve',
         /**
          * Starts the builded app from the dist directory.
          */
@@ -137,6 +137,13 @@ module.exports = {
          * Database scripts
          */
         db: {
+            start: {
+                script: series(
+                    'nps banner.dbstart',
+                    'service postgresql start'
+                ),
+                description: 'Migrates the database to newest version available'
+            },
             migrate: {
                 script: series(
                     'nps banner.migrate',
@@ -270,6 +277,7 @@ module.exports = {
             testIntegration: banner('test.integration'),
             testE2E: banner('test.e2e'),
             migrate: banner('migrate'),
+            dbstart: banner('db.start'),
             seed: banner('seed'),
             revert: banner('revert'),
             clean: banner('clean')
@@ -302,6 +310,9 @@ function runFast(path) {
     return `ts-node --transpileOnly ${path}`;
 }
 
+async function runOnPort(path, port) {
+
+}
 function tslint(path) {
     return `tslint -c ./tslint.json ${path} --format stylish`;
 }
