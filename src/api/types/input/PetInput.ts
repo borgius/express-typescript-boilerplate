@@ -1,6 +1,6 @@
 import { Field, InputType, Int } from 'type-graphql';
 
-import { Pet } from '../Pet';
+import { Pet } from '../../models/Pet';
 
 @InputType()
 export class PetInput implements Partial<Pet> {

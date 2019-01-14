@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 import { ObjectType } from 'typedi';
-import { getCustomRepository, getRepository, Repository } from 'typeorm';
+import { getCustomRepository, getRepository, In, Repository } from 'typeorm';
 
 // -------------------------------------------------------------------------
 // Main exports
@@ -35,13 +35,15 @@ export function createDataLoader<T>(obj: ObjectType<T>, options: CreateDataLoade
 
     return new DataLoader(async (ids: number[]) => {
         let items = [];
+        const key = options.key || 'id';
         if (options.method) {
             items = await repository[options.method](ids);
         } else {
-            items = await repository.findByIds(ids);
+            items = await repository.find({key: In(ids)});
         }
-
         const handleBatch = (arr: any[]) => options.multiple === true ? arr : arr[0];
-        return ids.map(id => handleBatch(items.filter(item => item[options.key || 'id'] === id)));
+        const res = ids.map(id => handleBatch(items.filter(item => item[key] === id)));
+        console.log(res);
+        return res;
     });
 }

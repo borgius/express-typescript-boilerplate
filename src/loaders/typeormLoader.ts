@@ -19,7 +19,6 @@ export const typeormLoader: MicroframeworkLoader = async (settings: Microframewo
         entities: env.app.dirs.entities,
         migrations: env.app.dirs.migrations,
     });
-
     const connection = await createConnection(connectionOptions);
 
     if (settings) {
