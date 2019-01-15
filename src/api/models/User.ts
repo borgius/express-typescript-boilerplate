@@ -2,9 +2,11 @@ import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { use } from 'typescript-mix';
 
-import { Pet } from './Pet';
+import { Flag } from './mixins/Flag';
+import { Organization } from './Organization';
 
 @Entity()
 @ObjectType({description: 'User object.'})
@@ -22,29 +24,24 @@ export class User {
     }
 
     public static comparePassword(user: User, password: string): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             bcrypt.compare(password, user.password, (err, res) => {
                 resolve(res === true);
             });
         });
     }
 
-    @PrimaryColumn('uuid')
+    @PrimaryGeneratedColumn({ type: 'bigint' })
     @Field(type => ID)
-    public id: string;
-
-    @IsNotEmpty()
-    @Column({ name: 'first_name' })
-    @Field({ description: 'The first name of the user.' })
-    public firstName: string;
-
-    @IsNotEmpty()
-    @Column({ name: 'last_name' })
-    @Field({ description: 'The last name of the user.' })
-    public lastName: string;
+    public id: number;
 
     @IsNotEmpty()
     @Column()
+    @Field({ description: 'The name of the user.' })
+    public name: string;
+
+    @IsNotEmpty()
+    @Column({ unique: true })
     @Field({ description: 'The email of the user.' })
     public email: string;
 
@@ -53,16 +50,20 @@ export class User {
     @Exclude()
     public password: string;
 
-    @IsNotEmpty()
-    @Column()
-    public username: string;
+    @ManyToOne(type => User, { nullable: true })
+    @Field(type => User, { description: 'Manager of user' })
+    public manager: User;
 
-    @OneToMany(type => Pet, pet => pet.user)
-    @Field(type => [Pet], { description: 'A list of pets which belong to the user.' })
-    public pets: Pet[];
+    @ManyToOne(type => Organization, { nullable: true })
+    @Field(type => Organization, { description: 'Manager of user' })
+    public organization: Organization;
+
+    // @OneToMany(user => Organization, organization => organization.user)
+    // @Field(type => [Organization], { description: 'A list of organizations which belong to the user.' })
+    // public organizations: Organization[];
 
     public toString(): string {
-        return `${this.firstName} ${this.lastName} (${this.email})`;
+        return `${this.name} (${this.email})`;
     }
 
     @BeforeInsert()
