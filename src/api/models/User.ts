@@ -1,40 +1,22 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { use } from 'typescript-mix';
+import {
+    BeforeInsert, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn
+} from 'typeorm';
 
-import { Flag } from './mixins/Flag';
 import { Organization } from './Organization';
 
-@Entity()
+@Entity('users')
 @ObjectType({description: 'User object.'})
 export class User {
-
-    public static hashPassword(password: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            bcrypt.hash(password, 10, (err, hash) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(hash);
-            });
-        });
-    }
-
-    public static comparePassword(user: User, password: string): Promise<boolean> {
-        return new Promise((resolve) => {
-            bcrypt.compare(password, user.password, (err, res) => {
-                resolve(res === true);
-            });
-        });
-    }
 
     @PrimaryGeneratedColumn({ type: 'bigint' })
     @Field(type => ID)
     public id: number;
 
+    @CreateDateColumn()
     @IsNotEmpty()
     @Column()
     @Field({ description: 'The name of the user.' })
@@ -55,8 +37,8 @@ export class User {
     public manager: User;
 
     @ManyToOne(type => Organization, { nullable: true })
-    @Field(type => Organization, { description: 'Manager of user' })
-    public organization: Organization;
+    @Field(type => Organization, { nullable: true, description: 'Manager of user' })
+    public organization?: Organization;
 
     // @OneToMany(user => Organization, organization => organization.user)
     // @Field(type => [Organization], { description: 'A list of organizations which belong to the user.' })
@@ -68,7 +50,11 @@ export class User {
 
     @BeforeInsert()
     public async hashPassword(): Promise<void> {
-        this.password = await User.hashPassword(this.password);
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+
+    public async comparePassword(password: string): Promise<boolean> {
+        return await bcrypt.compare(password, this.password);
     }
 
 }

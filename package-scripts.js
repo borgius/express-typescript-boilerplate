@@ -266,6 +266,33 @@ module.exports = {
                     hiddenFromHelp: true
                 }
             },
+            graphql: {
+                default: {
+                    script: series(
+                        'nps banner.testGraphql',
+                        'nps test.graphql.pretest',
+                        'nps test.graphql.run'
+                    ),
+                    description: 'Runs the graphql tests'
+                },
+                pretest: {
+                    script: tslint(`./test/graphql/**.ts`),
+                    hiddenFromHelp: true
+                },
+                run: {
+                    // -i. Run all tests serially in the current process, rather than creating a worker pool of child processes that run tests. This can be useful for debugging.
+                    script: 'cross-env NODE_ENV=test jest --testPathPattern=graphql -i',
+                    hiddenFromHelp: true
+                },
+                verbose: {
+                    script: 'nps "test --verbose"',
+                    hiddenFromHelp: true
+                },
+                coverage: {
+                    script: 'nps "test --coverage"',
+                    hiddenFromHelp: true
+                }
+            },
         },
         /**
          * This creates pretty banner to the terminal
@@ -276,6 +303,7 @@ module.exports = {
             testUnit: banner('test.unit'),
             testIntegration: banner('test.integration'),
             testE2E: banner('test.e2e'),
+            testGraphql: banner('test.GraphQl'),
             migrate: banner('migrate'),
             dbstart: banner('db.start'),
             seed: banner('seed'),

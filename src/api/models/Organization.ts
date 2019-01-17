@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber } from 'class-valida
 import { Field, ID, Int, ObjectType } from 'type-graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('organizations')
 @ObjectType({ description: 'Organization' })
 export class Organization {
 
