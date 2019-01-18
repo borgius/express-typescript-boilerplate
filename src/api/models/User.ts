@@ -1,21 +1,14 @@
 import * as bcrypt from 'bcryptjs';
 import { IsNotEmpty } from 'class-validator';
-import { Field, ID, ObjectType } from 'type-graphql';
-import {
-    BeforeInsert, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn
-} from 'typeorm';
+import { Field, ObjectType } from 'type-graphql';
+import { BeforeInsert, Column, Entity, ManyToOne } from 'typeorm';
 
+import { Base } from './Base';
 import { Organization } from './Organization';
 
 @Entity('users')
 @ObjectType({description: 'User object.'})
-export class User {
-
-    @PrimaryGeneratedColumn({ type: 'bigint' })
-    @Field(type => ID)
-    public id: number;
-
-    @CreateDateColumn()
+export class User extends Base {
     @IsNotEmpty()
     @Column()
     @Field({ description: 'The name of the user.' })
@@ -29,12 +22,12 @@ export class User {
     @Column({ nullable: true })
     public password: string;
 
-    @ManyToOne(type => User, { nullable: true })
-    @Field(type => User, { nullable: true, description: 'Manager of user' })
+    @ManyToOne(() => User, { nullable: true })
+    @Field(() => User, { nullable: true, description: 'Manager of user' })
     public manager: User;
 
-    @ManyToOne(type => Organization, { nullable: true })
-    @Field(type => Organization, { nullable: true, description: 'Manager of user' })
+    @ManyToOne(() => Organization, { nullable: true })
+    @Field(() => Organization, { nullable: true, description: 'Manager of user' })
     public organization?: Organization;
 
     // @OneToMany(user => Organization, organization => organization.user)
