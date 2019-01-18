@@ -16,7 +16,7 @@ export class OrganizationResolver {
         @Logger(__filename) private log: LoggerInterface    ) { }
 
     @Query(() => [Organization])
-    public organizations(@Ctx() { requestId }: Context): Promise<Organization[]> {
+    public organization(@Ctx() { requestId }: Context): Promise<Organization[]> {
         this.log.info(`{${requestId}} Find all users`);
         return this.organizationService.find();
     }

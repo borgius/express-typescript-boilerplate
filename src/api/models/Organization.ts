@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber } from 'class-validator';
-import { Field, ID, Int, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('organizations')
@@ -26,8 +26,8 @@ export class Organization {
 
     @IsPhoneNumber('ZZ')
     @Column({ nullable: true })
-    @Field(() => Int, { description: 'Phone number' })
-    public phone: number;
+    @Field({ description: 'Phone number' })
+    public phone: string;
 
     @IsEmail()
     @Column()

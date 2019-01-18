@@ -1,5 +1,4 @@
 import * as bcrypt from 'bcryptjs';
-import { Exclude } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
@@ -24,16 +23,14 @@ export class User {
 
     @IsNotEmpty()
     @Column({ unique: true })
-    @Field({ description: 'The email of the user.' })
+    @Field({ nullable: true, description: 'The email of the user.' })
     public email: string;
 
-    @IsNotEmpty()
-    @Column()
-    @Exclude()
+    @Column({ nullable: true })
     public password: string;
 
     @ManyToOne(type => User, { nullable: true })
-    @Field(type => User, { description: 'Manager of user' })
+    @Field(type => User, { nullable: true, description: 'Manager of user' })
     public manager: User;
 
     @ManyToOne(type => Organization, { nullable: true })
@@ -50,7 +47,7 @@ export class User {
 
     @BeforeInsert()
     public async hashPassword(): Promise<void> {
-        this.password = await bcrypt.hash(this.password, 10);
+        this.password = this.password ? await bcrypt.hash(this.password, 10) : undefined;
     }
 
     public async comparePassword(password: string): Promise<boolean> {

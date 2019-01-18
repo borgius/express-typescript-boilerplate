@@ -18,7 +18,7 @@ export class UserService {
 
     public find(): Promise<User[]> {
         this.log.info('Find all users');
-        return this.userRepository.find({ relations: ['organizations'] });
+        return this.userRepository.find({ relations: ['organization', 'manager'] });
     }
 
     public findOne(id: number): Promise<User | undefined> {
