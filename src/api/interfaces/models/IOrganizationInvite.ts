@@ -1,5 +1,3 @@
-import { IBaseEntity } from './IBaseEntity';
-
 export enum OrganizationInviteStatus {
   Invited = 'invited',
   Accepted = 'accepted',

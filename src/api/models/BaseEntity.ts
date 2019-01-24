@@ -2,7 +2,7 @@ import {
     Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn
 } from 'typeorm';
 
-import { TableFlags } from '../interfaces/models/IBaseEntity';
+import { TableFlags } from '../interfaces/models/TableFlags';
 
 export class BaseEntity {
     @PrimaryGeneratedColumn({ type: 'bigint' })
@@ -21,6 +21,7 @@ export class BaseEntity {
         type: 'enum',
         enum: TableFlags,
         array: true,
+        nullable: true,
     })
     public flags?: TableFlags[];
 }

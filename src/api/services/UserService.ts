@@ -16,9 +16,9 @@ export class UserService {
         @Logger(__filename) private log: LoggerInterface
     ) { }
 
-    public find(): Promise<User[]> {
+    public async find(): Promise<User[]> {
         this.log.info('Find all users');
-        return this.userRepository.find({ relations: ['organization', 'manager'] });
+        return this.userRepository.find({ relations: ['organization', 'manager'], take: 1 });
     }
 
     public findOne(id: number): Promise<User | undefined> {

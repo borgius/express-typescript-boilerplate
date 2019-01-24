@@ -1,14 +1,13 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 
 // import { TableFlags } from '../interfaces/models/IBaseEntity';
-import { IOrganization } from '../interfaces/models/IOrganization';
-import { Organization as MOrganization } from '../models/Organization';
+import { IOrganization } from '../../interfaces/models/IOrganization';
+import { TableFlags } from '../../interfaces/models/TableFlags';
+
+// import { BaseType } from './BaseType';
 
 @ObjectType({ description: 'Organization' })
-export class Organization extends MOrganization implements IOrganization {
-    public createdAt: Date;
-    public updatedAt: Date;
-    public version: number;
+export class Organization implements IOrganization {
     @Field(() => ID)
     public id: number;
 
@@ -44,5 +43,5 @@ export class Organization extends MOrganization implements IOrganization {
     @Field({ description: 'zip' })
     public zip?: string;
 
-    // public flags: TableFlags[];
+    public flags?: TableFlags[];
 }

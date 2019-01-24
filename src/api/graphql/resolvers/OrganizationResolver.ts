@@ -1,10 +1,10 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
-import { Logger, LoggerInterface } from '../../decorators/Logger';
-import { Context } from '../Context';
-import { OrganizationService } from '../services/OrganizationService';
-import { OrganizationInput } from '../types/input/OrganizationInput';
+import { Logger, LoggerInterface } from '../../../decorators/Logger';
+import { Context } from '../../Context';
+import { OrganizationService } from '../../services/OrganizationService';
+import { OrganizationInput } from '../input/OrganizationInput';
 import { Organization } from '../types/Organization';
 
 @Service()

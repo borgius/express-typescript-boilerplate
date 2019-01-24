@@ -1,7 +1,4 @@
-export enum TableFlags {
-    test = 'test',
-    seed = 'seed',
-}
+import { TableFlags } from './TableFlags';
 
 export interface IBaseEntity {
     id: number;

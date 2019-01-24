@@ -1,7 +1,7 @@
 export interface IOrganization {
   name: string;
   key: string;
-  companyUrl?: string;
+  url?: string;
   phone?: string;
   email: string;
   address?: string;

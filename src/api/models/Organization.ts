@@ -48,7 +48,7 @@ export class Organization extends BaseEntity implements IBaseEntity, IOrganizati
     public state?: string;
 
     public toString(): string {
-        return `${this.name}`;
+        return `${this.name}, ${this.city}`;
     }
 
 }
