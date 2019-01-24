@@ -1,4 +1,4 @@
-import { IBaseFields } from './baseFields';
+import { IBaseEntity } from './IBaseEntity';
 
 export enum OrganizationInviteStatus {
   Invited = 'invited',
@@ -6,12 +6,9 @@ export enum OrganizationInviteStatus {
   Rejected = 'rejected',
 }
 
-export interface IOrganizationInvite extends IBaseFields {
+export interface IOrganizationInvite {
   organizationId: number;
   userId?: number;
   userEmail: string;
   status: OrganizationInviteStatus;
-  createdAt: Date;
-  updatedAt: Date;
-
 }

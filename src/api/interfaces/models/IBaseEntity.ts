@@ -3,10 +3,10 @@ export enum TableFlags {
     seed = 'seed',
 }
 
-export interface IBaseFields {
+export interface IBaseEntity {
     id: number;
     createdAt: Date;
     updatedAt: Date;
     version: number;
-    flags: TableFlags[];
+    flags?: TableFlags[];
 }

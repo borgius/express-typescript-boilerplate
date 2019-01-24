@@ -1,11 +1,9 @@
-import { IBaseFields } from './baseFields';
-
-export interface IOrganization extends IBaseFields {
+export interface IOrganization {
   name: string;
   key: string;
   companyUrl?: string;
   phone?: string;
-  email?: string;
+  email: string;
   address?: string;
   address2?: string;
   country?: string;

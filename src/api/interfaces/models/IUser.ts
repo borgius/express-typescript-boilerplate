@@ -1,5 +1,3 @@
-import { IBaseFields } from './baseFields';
-
 // values should be equal to database type values
 export const enum UserRole {
   Owner = 'owner',
@@ -10,8 +8,8 @@ export const enum UserRole {
   Tester = 'tester',
 }
 
-export interface IUser extends IBaseFields {
-  role: UserRole;
+export interface IUser {
+  role?: UserRole;
   name?: string;
   email?: string;
   managerId?: number;

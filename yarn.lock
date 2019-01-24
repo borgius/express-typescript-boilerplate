@@ -6004,6 +6004,11 @@ ts-node@7.0.1:
     source-map-support "^0.5.6"
     yn "^2.0.0"
 
+ts-simple-nameof@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ts-simple-nameof/-/ts-simple-nameof-1.1.0.tgz#137de0c46f7d853b6b76eb14ff1b939e238445bc"
+  integrity sha1-E33gxG99hTtrdusU/xuTniOERbw=
+
 tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
@@ -6085,6 +6090,13 @@ typedi@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/typedi/-/typedi-0.8.0.tgz#d8e203bd1d41a96e2b0a5c6295147d74b2b2d03e"
   integrity sha512-/c7Bxnm6eh5kXx2I+mTuO+2OvoWni5+rXA3PhXwVWCtJRYmz3hMok5s1AKLzoDvNAZqj/Q/acGstN0ri5aQoOA==
+
+typeorm-linq-repository@^1.0.0-alpha.12:
+  version "1.0.0-alpha.12"
+  resolved "https://registry.yarnpkg.com/typeorm-linq-repository/-/typeorm-linq-repository-1.0.0-alpha.12.tgz#de910a1cdbf15ac034bf67099821a3508dce28d5"
+  integrity sha512-+9VKcN9vIRXB+0cWjHR83opndlGrYfgB5SuRqJXgfK1dyi7E1O8cpvRxINnn2sy4L3ryT9ACzjS1RhKK1Ew2xg==
+  dependencies:
+    ts-simple-nameof "1.1.0"
 
 typeorm-seeding@^1.0.0-beta.6:
   version "1.0.0-beta.6"

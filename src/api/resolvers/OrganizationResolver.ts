@@ -3,9 +3,9 @@ import { Service } from 'typedi';
 
 import { Logger, LoggerInterface } from '../../decorators/Logger';
 import { Context } from '../Context';
-import { Organization } from '../models/Organization';
 import { OrganizationService } from '../services/OrganizationService';
 import { OrganizationInput } from '../types/input/OrganizationInput';
+import { Organization } from '../types/Organization';
 
 @Service()
 @Resolver(() => Organization)

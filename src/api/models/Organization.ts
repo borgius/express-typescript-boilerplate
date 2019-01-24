@@ -1,59 +1,50 @@
 import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber } from 'class-validator';
-import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { IBaseEntity } from '../interfaces/models/IBaseEntity';
+import { IOrganization } from '../interfaces/models/IOrganization';
+import { BaseEntity } from './BaseEntity';
+
 @Entity('organizations')
-@ObjectType({ description: 'Organization' })
-export class Organization {
+export class Organization extends BaseEntity implements IBaseEntity, IOrganization {
 
     @PrimaryGeneratedColumn({ type: 'bigint'})
-    @Field(() => ID)
     public id: number;
 
     @IsNotEmpty()
     @Column()
-    @Field({ description: 'The name of the Organization' })
     public name: string;
 
     @IsNotEmpty()
     @Column()
-    @Field({ description: 'The key of the Organization.' })
     public key: string;
 
     @Column({ nullable: true })
-    @Field({ description: 'Company Url' })
     public url?: string;
 
     @IsPhoneNumber('ZZ')
     @Column({ nullable: true })
-    @Field({ description: 'Phone number' })
-    public phone: string;
+    public phone?: string;
 
     @IsEmail()
     @Column()
-    @Field({ description: 'Company Email' })
     public email: string;
 
     @IsNotEmpty()
     @Column()
-    @Field({ description: 'Address' })
     public address: string;
 
     @Column({ nullable: true })
-    @Field({ description: 'Address2' })
     public address2?: string;
 
     @IsNumberString()
     @Column()
-    @Field({ description: 'zip' })
-    public zip: string;
+    public zip?: string;
 
     @Column({ nullable: true })
-    @Field({ description: 'City' })
     public city?: string;
 
     @Column({ nullable: true })
-    @Field({ description: 'State' })
     public state?: string;
 
     public toString(): string {

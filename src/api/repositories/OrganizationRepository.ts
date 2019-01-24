@@ -1,9 +1,10 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository } from 'typeorm';
 
 import { Organization } from '../models/Organization';
+import { BaseRepository } from './BaseRepository';
 
 @EntityRepository(Organization)
-export class OrganizationRepository extends Repository<Organization> {
+export class OrganizationRepository extends BaseRepository<Organization> {
 
     /**
      * Find by user_id is used for our data-loader to get all needed Organizations in one query.

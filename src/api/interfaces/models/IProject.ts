@@ -1,6 +1,6 @@
-import { IBaseFields } from './baseFields';
+import { IBaseEntity } from './IBaseEntity';
 
-export interface IProject extends IBaseFields {
+export interface IProject extends IBaseEntity {
   name: string;
   key: string;
   description: string;
