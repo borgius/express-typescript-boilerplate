@@ -244,22 +244,22 @@ module.exports = {
                     hiddenFromHelp: true
                 }
             },
-            e2e: {
+            api: {
                 default: {
                     script: series(
-                        'nps banner.testE2E',
-                        'nps test.e2e.pretest',
-                        'nps test.e2e.run'
+                        'nps banner.testAPI',
+                        'nps test.api.pretest',
+                        'nps test.api.run'
                     ),
-                    description: 'Runs the e2e tests'
+                    description: 'Runs the API tests'
                 },
                 pretest: {
-                    script: tslint(`./test/e2e/**.ts`),
+                    script: tslint(`./test/api/**.ts`),
                     hiddenFromHelp: true
                 },
                 run: {
                     // -i. Run all tests serially in the current process, rather than creating a worker pool of child processes that run tests. This can be useful for debugging.
-                    script: 'cross-env NODE_ENV=test jest --testPathPattern=e2e -i',
+                    script: 'cross-env NODE_ENV=test jest --testPathPattern=api -i',
                     hiddenFromHelp: true
                 },
                 verbose: {
@@ -307,7 +307,7 @@ module.exports = {
             serve: banner('serve'),
             testUnit: banner('test.unit'),
             testIntegration: banner('test.integration'),
-            testE2E: banner('test.e2e'),
+            testAPI: banner('test.api'),
             testGraphql: banner('test.GraphQl'),
             migrate: banner('migrate'),
             dbstart: banner('db.start'),

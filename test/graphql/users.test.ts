@@ -1,14 +1,13 @@
-import * as nock from 'nock';
 import request from 'supertest';
 import { runSeed } from 'typeorm-seeding';
 
-import { User } from '../../../src/api/models/User';
-import { CreateTest } from '../../../src/database/seeds/CreateTest';
-import { closeDatabase } from '../../utils/database';
+import { User } from '../../src/api/models/User';
+import { CreateTest } from '../../src/database/seeds/CreateTest';
 import { BootstrapSettings } from '../utils/bootstrap';
+import { closeDatabase } from '../utils/database';
 import { prepareServer } from '../utils/server';
 
-describe('GraphQL type users', () => {
+describe('GraphQL: type Users', () => {
 
     let user: User;
     // let bruceAuthorization: string;
@@ -30,7 +29,7 @@ describe('GraphQL type users', () => {
 
     afterAll(async () => {
         // nock.cleanAll();
-        // await closeDatabase(settings.connection);
+        await closeDatabase(settings.connection);
     });
 
     // -------------------------------------------------------------------------
@@ -38,7 +37,7 @@ describe('GraphQL type users', () => {
     // -------------------------------------------------------------------------
 
     test('"users" should return a list of users', async (done) => {
-        const response = await request(settings.app)
+        await request(settings.app)
             .post('/graphql')
             .send({ query: `
                 query GetUser {

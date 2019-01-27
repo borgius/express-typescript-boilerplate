@@ -1,6 +1,6 @@
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework-w3tec';
 
-import { createDatabaseConnection } from '../../utils/database';
+import { createDatabaseConnection } from './database';
 
 export const typeormLoader: MicroframeworkLoader = async (settings: MicroframeworkSettings | undefined) => {
 

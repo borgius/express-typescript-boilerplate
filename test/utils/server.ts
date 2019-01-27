@@ -1,7 +1,7 @@
 import { setConnection } from 'typeorm-seeding';
 
-import { migrateDatabase } from '../../utils/database';
 import { bootstrapApp } from './bootstrap';
+import { migrateDatabase } from './database';
 
 export const prepareServer = async (options?: { migrate?: boolean, sync?: boolean }) => {
     const settings = await bootstrapApp();

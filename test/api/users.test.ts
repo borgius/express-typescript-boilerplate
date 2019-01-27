@@ -4,9 +4,9 @@ import { runSeed } from 'typeorm-seeding';
 
 import { User } from '../../../src/api/models/User';
 import { CreateTest } from '../../../src/database/seeds/CreateTest';
+import { BootstrapSettings } from '../../utils/bootstrap';
 import { closeDatabase } from '../../utils/database';
-import { BootstrapSettings } from '../utils/bootstrap';
-import { prepareServer } from '../utils/server';
+import { prepareServer } from '../../utils/server';
 
 describe('/api/users', () => {
 
@@ -21,7 +21,7 @@ describe('/api/users', () => {
     beforeAll(async () => {
         settings = await prepareServer({ migrate: true });
         bruce = await runSeed<User>(CreateTest);
-        bruceAuthorization = Buffer.from(`${bruce.username}:1234`).toString('base64');
+        bruceAuthorization = Buffer.from(`${bruce.email}:1234`).toString('base64');
     });
 
     // -------------------------------------------------------------------------
@@ -56,8 +56,7 @@ describe('/api/users', () => {
             .expect(200);
 
         expect(response.body.id).toBe(bruce.id);
-        expect(response.body.firstName).toBe(bruce.firstName);
-        expect(response.body.lastName).toBe(bruce.lastName);
+        expect(response.body.name).toBe(bruce.name);
         expect(response.body.email).toBe(bruce.email);
         done();
     });
