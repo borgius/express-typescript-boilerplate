@@ -168,6 +168,10 @@ module.exports = {
                 ),
                 description: 'Seeds generated records into the database'
             },
+            sync: {
+                script: runFast('./node_modules/typeorm/cli.js schema:sync'),
+                description: 'Sync the schema of the database'
+            },
             drop: {
                 script: runFast('./node_modules/typeorm/cli.js schema:drop'),
                 description: 'Drops the schema of the database'
@@ -175,6 +179,7 @@ module.exports = {
             setup: {
                 script: series(
                     'nps db.drop',
+                    'nps db.sync',
                     'nps db.migrate',
                     'nps db.seed'
                 ),

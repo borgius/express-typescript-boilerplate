@@ -11,9 +11,9 @@ export class User implements IUser {
     @Field(() => ID)
     public id: number;
 
-    public createdAt: Date;
-    public updatedAt: Date;
-    public version: number;
+    public createdAt?: Date;
+    public updatedAt?: Date;
+    public version?: number;
 
     public currentProjectId?: number;
     @Field({ description: 'The name of the user.' })

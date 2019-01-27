@@ -30,7 +30,7 @@ describe('GraphQL type users', () => {
 
     afterAll(async () => {
         // nock.cleanAll();
-        await closeDatabase(settings.connection);
+        // await closeDatabase(settings.connection);
     });
 
     // -------------------------------------------------------------------------

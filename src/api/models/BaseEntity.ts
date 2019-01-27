@@ -9,13 +9,13 @@ export class BaseEntity {
     public id: number;
 
     @CreateDateColumn()
-    public createdAt: Date;
+    public createdAt?: Date;
 
     @UpdateDateColumn()
-    public updatedAt: Date;
+    public updatedAt?: Date;
 
     @VersionColumn()
-    public version: number;
+    public version?: number;
 
     @Column({
         type: 'enum',
