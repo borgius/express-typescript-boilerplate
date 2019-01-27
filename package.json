@@ -102,7 +102,7 @@
       "json"
     ],
     "testEnvironment": "node",
-    "setupTestFrameworkScriptFile": "./test/unit/lib/setup.ts"
+    "setupTestFrameworkScriptFile": "./test/setup.ts"
   },
   "license": "MIT",
   "devDependencies": {
