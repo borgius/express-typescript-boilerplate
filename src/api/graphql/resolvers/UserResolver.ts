@@ -16,7 +16,6 @@ export class UserResolver {
 
     @Query(returns => [User])
     public async users(params: any = undefined): Promise<User[]> {
-        console.log(params);
         const users: User[] = await this.userService.find();
         return users;
     }

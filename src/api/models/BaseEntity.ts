@@ -5,7 +5,7 @@ import {
 import { TableFlags } from '../interfaces/models/TableFlags';
 
 export class BaseEntity {
-    @PrimaryGeneratedColumn({ type: 'bigint' })
+    @PrimaryGeneratedColumn()
     public id: number;
 
     @CreateDateColumn()

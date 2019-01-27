@@ -10,8 +10,6 @@ import { getErrorCode, getErrorMessage, handlingErrors } from '../lib/graphql';
 
 export const graphqlLoader: MicroframeworkLoader = async (settings: MicroframeworkSettings | undefined) => {
     if (settings && env.graphql.enabled) {
-        const expressApp = settings.getData('express_app');
-
         const schema = await buildSchema({
             resolvers: env.app.dirs.resolvers,
             // automatically create `schema.gql` file with schema definition in current folder
@@ -19,6 +17,8 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
         });
 
         handlingErrors(schema);
+
+        const expressApp = settings.getData('express_app');
 
         // Add graphql layer to the express app
         expressApp.use(env.graphql.route, (request: express.Request, response: express.Response) => {

@@ -8,9 +8,9 @@ import { closeDatabase } from '../../utils/database';
 import { BootstrapSettings } from '../utils/bootstrap';
 import { prepareServer } from '../utils/server';
 
-describe('/api/users', () => {
+describe('GraphQL type users', () => {
 
-    let bruce: User;
+    let user: User;
     // let bruceAuthorization: string;
     let settings: BootstrapSettings;
 
@@ -20,7 +20,7 @@ describe('/api/users', () => {
 
     beforeAll(async () => {
         settings = await prepareServer({ sync: true });
-        bruce = await runSeed<User>(CreateTest);
+        user = await runSeed<User>(CreateTest);
         // bruceAuthorization = Buffer.from(`${bruce.name}:1234`).toString('base64');
     });
 
@@ -29,7 +29,7 @@ describe('/api/users', () => {
     // -------------------------------------------------------------------------
 
     afterAll(async () => {
-        nock.cleanAll();
+        // nock.cleanAll();
         await closeDatabase(settings.connection);
     });
 
@@ -37,8 +37,31 @@ describe('/api/users', () => {
     // Test cases
     // -------------------------------------------------------------------------
 
-    test('GET: / should return a list of users', async (done) => {
-        expect(1).toBe(1);
+    test('"users" should return a list of users', async (done) => {
+        const response = await request(settings.app)
+            .post('/graphql')
+            .send({ query: `
+                query GetUser {
+                    users {
+                        id
+                        organization {
+                            id
+                            name
+                            address
+                        }
+                        manager {
+                            id
+                            name
+                        }
+                    }
+                    }`,
+                })
+            .expect(200)
+            .expect( ({ body: { data }}) => {
+                expect(data.users)
+                .toBeArray()
+                .toSatisfy(users => users.length > 0);
+            });
         done();
     });
 });

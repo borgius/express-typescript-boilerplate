@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 import { IBaseEntity } from '../interfaces/models/IBaseEntity';
 import { IOrganization } from '../interfaces/models/IOrganization';
@@ -7,9 +7,6 @@ import { BaseEntity } from './BaseEntity';
 
 @Entity('organizations')
 export class Organization extends BaseEntity implements IBaseEntity, IOrganization {
-
-    @PrimaryGeneratedColumn({ type: 'bigint'})
-    public id: number;
 
     @IsNotEmpty()
     @Column()
