@@ -33,7 +33,8 @@ export const bootstrapApp = async (): Promise<BootstrapSettings> => {
             ],
         });
     } catch (err) {
-        log.error(err);
+        console.error(err);
+        // log.error(err);
     }
     const setting = {
         app: framework.settings.getData('express_app') as Application,
