@@ -20,8 +20,7 @@ export class AuthService {
         if (authorization && authorization.split(' ')[0] === 'Basic') {
             this.log.info('Credentials provided by the client');
             const decodedBase64 = Buffer.from(authorization.split(' ')[1], 'base64').toString('ascii');
-            const username = decodedBase64.split(':')[0];
-            const password = decodedBase64.split(':')[1];
+            const [username, password] = decodedBase64.split(':');
             if (username && password) {
                 return { username, password };
             }
@@ -29,6 +28,10 @@ export class AuthService {
 
         this.log.info('No credentials provided by the client');
         return undefined;
+    }
+
+    public parseJWTRequest(req: express.Request): boolean {
+        return true;
     }
 
     public async validateUser(username: string, password: string): Promise<User> {
