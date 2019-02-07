@@ -2,11 +2,11 @@ import * as nock from 'nock';
 import request from 'supertest';
 import { runSeed } from 'typeorm-seeding';
 
-import { User } from '../../../src/api/models/User';
-import { CreateTest } from '../../../src/database/seeds/CreateTest';
-import { BootstrapSettings } from '../../utils/bootstrap';
-import { closeDatabase } from '../../utils/database';
-import { prepareServer } from '../../utils/server';
+import { User } from '../../src/api/models/User';
+import { CreateTest } from '../../src/database/seeds/CreateTest';
+import { BootstrapSettings } from '../utils/bootstrap';
+import { closeDatabase } from '../utils/database';
+import { prepareServer } from '../utils/server';
 
 describe('/api/users', () => {
 

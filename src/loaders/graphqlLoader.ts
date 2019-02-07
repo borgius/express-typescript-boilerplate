@@ -29,11 +29,12 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
 
         let authUser;
         expressApp.use(env.graphql.route, (request: express.Request, response: express.Response, next) => {
+            // console.log(request);
             passport.authenticate('jwt', { session: false }, (err, user, info) => {
+                console.log(err, user, info);
                 if (user) {
                     authUser = user;
                 }
-
                 next();
             })(request, response, next);
         });

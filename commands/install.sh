@@ -17,7 +17,5 @@ GRANT ALL PRIVILEGES ON DATABASE $TYPEORM_DATABASE TO $TYPEORM_USERNAME;
 END
 }
 
-. $ROOT/.env
-createDB
-. $ROOT/.env.test
-createDB
+#. $ROOT/.env && createDB
+. $ROOT/.env.test && createDB

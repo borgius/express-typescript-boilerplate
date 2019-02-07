@@ -41,6 +41,9 @@ export const env = {
             resolvers: getOsPaths('RESOLVERS'),
         },
     },
+    auth: {
+        jwt_secret: getOsEnv('JWT_SECRET'),
+    },
     log: {
         level: getOsEnv('LOG_LEVEL'),
         json: toBool(getOsEnvOptional('LOG_JSON')),
