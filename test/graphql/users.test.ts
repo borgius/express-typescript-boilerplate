@@ -1,4 +1,4 @@
-import { jwt } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import request from 'supertest';
 import { runSeed } from 'typeorm-seeding';
 
@@ -32,10 +32,8 @@ describe('GraphQL: type Users', () => {
     beforeAll(async () => {
         settings = await prepareServer({ sync: true });
         user = await runSeed<User>(CreateTest);
-        // token = jwt.sign(testUsers[0], env.auth.jwt_secret);
-        token = '1234';
+        token = jwt.sign(testUsers[0], env.auth.jwt_secret);
         console.log('test token', token, user);
-        // bruceAuthorization = Buffer.from(`${bruce.name}:1234`).toString('base64');
     }, 100000000);
 
     // -------------------------------------------------------------------------
@@ -54,8 +52,7 @@ describe('GraphQL: type Users', () => {
     test('"users" should return a list of users', async (done) => {
         await request(settings.app)
             .post('/graphql')
-            // tslint:disable-next-line:max-line-length
-            .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IkpvaG4iLCJlbWFpbCI6ImpvaG5AbWFpbC5jb20iLCJwYXNzd29yZCI6ImpvaG4xMjMiLCJpYXQiOjE1NDg2NDMzNTh9.solM2YxIuJpX1W9o4qeG7PAapfB7qIah9-Uk6eDbr-o`)
+            .set('Authorization', `Bearer ${token}`)
             .send({ query: `
                 query GetUser {
                     users {

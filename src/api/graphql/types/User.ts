@@ -7,7 +7,6 @@ import { Organization } from './Organization';
 
 @ObjectType({description: 'User object.'})
 export class User implements IUser {
-
     @Field(() => ID)
     public id: number;
 

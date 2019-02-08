@@ -2,42 +2,29 @@ import * as express from 'express';
 import GraphQLHTTP from 'express-graphql';
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework-w3tec';
 import * as path from 'path';
-import { AuthChecker, buildSchema } from 'type-graphql';
+import { buildSchema } from 'type-graphql';
 import Container from 'typedi';
 
-import passport from '../auth/passportStrategies';
+import { AuthService } from '../auth/AuthService';
 import { env } from '../env';
 import { getErrorCode, getErrorMessage, handlingErrors } from '../lib/graphql';
 
 export const graphqlLoader: MicroframeworkLoader = async (settings: MicroframeworkSettings | undefined) => {
     if (settings && env.graphql.enabled) {
 
-        const customAuthChecker: AuthChecker =
-        ({ root, args, context, info }, roles) => {
-            return true; // or false if access denied
-        };
+        const expressApp = settings.getData('express_app');
+        const authService = Container.get<AuthService>(AuthService);
+        let authUser;
 
         const schema = await buildSchema({
             resolvers: env.app.dirs.resolvers,
-            authChecker: customAuthChecker,
+            authChecker: authService.authChecker,
             // automatically create `schema.gql` file with schema definition in current folder
             emitSchemaFile: path.resolve(__dirname, '../api', 'schema.gql'),
         });
-
-        const expressApp = settings.getData('express_app');
         handlingErrors(schema);
 
-        let authUser;
-        expressApp.use(env.graphql.route, (request: express.Request, response: express.Response, next) => {
-            // console.log(request);
-            passport.authenticate('jwt', { session: false }, (err, user, info) => {
-                console.log(err, user, info);
-                if (user) {
-                    authUser = user;
-                }
-                next();
-            })(request, response, next);
-        });
+        expressApp.use(env.graphql.route, authService.jwtAuthenticate(user => authUser = user));
 
         // Add graphql layer to the express app
         expressApp.use(env.graphql.route, (request: express.Request, response: express.Response) => {
