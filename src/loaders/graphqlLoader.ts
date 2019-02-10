@@ -5,6 +5,7 @@ import * as path from 'path';
 import { buildSchema } from 'type-graphql';
 import Container from 'typedi';
 
+import { Context } from '../api/Context';
 import { AuthService } from '../auth/AuthService';
 import { env } from '../env';
 import { getErrorCode, getErrorMessage, handlingErrors } from '../lib/graphql';
@@ -31,7 +32,7 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
             // Build GraphQLContext
             const requestId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER); // uuid-like
             const container = Container.of(requestId); // get scoped container
-            const context = { requestId, container, request, response, user: authUser }; // create our context
+            const context: Context = { requestId, container, request, response, user: authUser }; // create our context
 
             container.set('context', context); // place context or other data in container
 

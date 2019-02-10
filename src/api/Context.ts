@@ -6,4 +6,9 @@ export interface Context {
   request: express.Request;
   response: express.Response;
   container: ContainerInstance;
+  user?: {
+      id: number;
+      email: string;
+      [key: string]: any;
+  };
 }

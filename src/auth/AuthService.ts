@@ -1,4 +1,5 @@
 import * as express from 'express';
+import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Service } from 'typedi';
@@ -44,7 +45,7 @@ export class AuthService {
     }
 
     public authChecker({ root, args, context, info }: any, roles: string[]): boolean {
-        return true; // or false if access denied
+        return context.user && context.user.id; // or false if access denied
     }
 
     public async validateUser(email: string, password: string): Promise<User> {
@@ -55,6 +56,10 @@ export class AuthService {
             return user;
         }
         return undefined;
+    }
+
+    public generateJWT(payload: any): string {
+        return jwt.sign(payload, env.auth.jwt_secret);
     }
 
     public passportInitialize(): passport.PassportStatic {
@@ -68,8 +73,15 @@ export class AuthService {
             secretOrKey: env.auth.jwt_secret,
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         };
+
         return new Strategy(params, async (payload, done) => {
-            const user = await this.validateUser(payload.email, payload.password);
+            let user: User;
+            if (payload.id && payload.email) {
+                user = await this.userRepository.findOne({
+                    where: { id: payload.id, email: payload.email },
+                    relations: ['organization'],
+                });
+            }
             return done(undefined, user);
         });
     }

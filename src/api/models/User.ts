@@ -27,7 +27,9 @@ export class User extends BaseEntity implements IBaseEntity, IUser {
     @ManyToOne(() => Organization, { nullable: true })
     public organization?: Organization;
 
-    public role: UserRole;
+    @Column('enum', { nullable: true, enum: UserRole, array: true})
+    public roles: UserRole[];
+
     // @OneToMany(user => Organization, organization => organization.user)
     // @Field(type => [Organization], { description: 'A list of organizations which belong to the user.' })
     // public organizations: Organization[];

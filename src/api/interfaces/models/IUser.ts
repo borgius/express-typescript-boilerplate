@@ -1,5 +1,5 @@
 // values should be equal to database type values
-export const enum UserRole {
+export enum UserRole {
   Owner = 'owner',
   Admin = 'admin',
   Manager = 'manager',
