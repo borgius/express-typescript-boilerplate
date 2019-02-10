@@ -11,7 +11,7 @@ import { User } from '../api/models/User';
 import { UserRepository } from '../api/repositories/UserRepository';
 import { Logger, LoggerInterface } from '../decorators/Logger';
 import { env } from '../env';
-import acl from './acl';
+import { acl } from './acl';
 
 @Service()
 export class AuthService {
@@ -47,12 +47,14 @@ export class AuthService {
         };
     }
 
-    public async authChecker({ context: { user } }: any, perms: Permission | any): Promise<boolean> {
+    public async authChecker({ context: { user } }: any, perms: Permission[] | any): Promise<boolean> {
         const isAuthenticated = user && !!user.id;
-        let isAllowed = false;
+        let isAllowed = false || perms.length === 0;
         if (isAuthenticated && perms && user.roles) {
             for (const userRole of user.roles) {
-                isAllowed = isAllowed || await acl.isAllowed(userRole, perms[0].resources, perms[0].permissions);
+                for (const perm of perms) {
+                    isAllowed = isAllowed || await acl.isAllowed(userRole, perm.resources, perm.permissions);
+                }
             }
         }
         return isAuthenticated && isAllowed;

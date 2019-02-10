@@ -2,8 +2,8 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
 import { AuthService } from '../../../auth/AuthService';
+import { Acl, RP } from '../../../decorators/Acl';
 import { Context } from '../../Context';
-import { Permission } from '../../interfaces/acl';
 import { UserService } from '../../services/UserService';
 import { User } from '../types/User';
 
@@ -16,13 +16,13 @@ export class UserResolver {
         private authService: AuthService
     ) {}
 
-    @Authorized<Permission>({ resources: 'user', permissions: 'get' })
+    @Authorized()
     @Query(returns => User)
     public async me(@Ctx() ctx: Context): Promise<User> {
         return ctx.user as User;
     }
 
-    @Authorized<Permission>({ resources: 'users', permissions: 'MODERATOR' })
+    @Acl(RP.user.get)
     @Query(returns => [User])
     public async users(@Ctx() ctx: Context): Promise<User[]> {
         const users: User[] = await this.userService.find();

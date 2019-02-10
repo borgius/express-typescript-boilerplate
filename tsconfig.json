@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
-        "paths": { "*": ["types/*"] },
+        "paths": {
+            "src/*": ["src/*"],
+            "*": ["types/*"]
+        },
         "target": "es6",
         "module": "commonjs",
         "pretty": true,
@@ -38,5 +41,7 @@
             "es2015.symbol.wellknown",
             "esnext.asynciterable"
         ]
-    }
+    },
+    "include": ["node_modules/@types", "src/**/*"],
+    "exclude": ["node_modules"]
 }
