@@ -1,8 +1,8 @@
 import { Request } from 'express';
 import MockExpressRequest from 'mock-express-request';
-import { User } from 'src/api/models/User';
 
 import { AuthService } from '../../../src/auth/AuthService';
+import { User } from '../../api/models/User';
 import { LogMock } from '../lib/LogMock';
 import { RepositoryMock } from '../lib/RepositoryMock';
 

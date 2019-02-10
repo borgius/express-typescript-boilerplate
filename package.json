@@ -40,6 +40,7 @@
   ],
   "dependencies": {
     "@gql2ts/from-schema": "^1.10.1",
+    "acl": "^0.4.11",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^2.4.1",
@@ -97,6 +98,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/acl": "^0.4.36",
     "@types/bcrypt": "^2.0.0",
     "@types/bluebird": "^3.5.18",
     "@types/chalk": "^2.2.0",

@@ -2,6 +2,8 @@ import { Connection } from 'typeorm';
 import { Factory, Seed } from 'typeorm-seeding';
 import * as uuid from 'uuid';
 
+import { UserRole } from '../../api/interfaces/models/IUser';
+import { Organization } from '../../api/models/Organization';
 import { User } from '../../api/models/User';
 
 export class CreateTest implements Seed {
@@ -28,8 +30,11 @@ export class CreateTest implements Seed {
 
         // const connection = await factory.getConnection();
         const em = connection.createEntityManager();
+        const organization = await factory(Organization)().seed();
 
         const user = new User();
+        user.organization = organization;
+        user.roles = [UserRole.Admin];
         user.name = 'Test';
         user.email = 'test@test.com';
         user.password = '1234';

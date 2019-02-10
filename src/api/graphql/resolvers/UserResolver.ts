@@ -1,9 +1,9 @@
-import { pick } from 'ramda';
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
 import { AuthService } from '../../../auth/AuthService';
 import { Context } from '../../Context';
+import { Permission } from '../../interfaces/acl';
 import { UserService } from '../../services/UserService';
 import { User } from '../types/User';
 
@@ -16,13 +16,13 @@ export class UserResolver {
         private authService: AuthService
     ) {}
 
-    @Authorized()
+    @Authorized<Permission>({ resources: 'user', permissions: 'get' })
     @Query(returns => User)
     public async me(@Ctx() ctx: Context): Promise<User> {
         return ctx.user as User;
     }
 
-    @Authorized('ADMIN', 'MODERATOR')
+    @Authorized<Permission>({ resources: 'users', permissions: 'MODERATOR' })
     @Query(returns => [User])
     public async users(@Ctx() ctx: Context): Promise<User[]> {
         const users: User[] = await this.userService.find();
@@ -32,6 +32,6 @@ export class UserResolver {
     @Mutation(returns => String)
     public async login(@Arg('email') email: string, @Arg('password') password: string): Promise<any> {
         const user = await this.authService.validateUser(email, password);
-        return this.authService.generateJWT(pick(['id', 'email', 'roles'], user));
+        return this.authService.generateJWT(user);
     }
 }

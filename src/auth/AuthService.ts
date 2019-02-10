@@ -2,13 +2,16 @@ import * as express from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { pick } from 'ramda';
 import { Service } from 'typedi';
 import { OrmRepository } from 'typeorm-typedi-extensions';
 
+import { Permission } from '../api/interfaces/acl';
 import { User } from '../api/models/User';
 import { UserRepository } from '../api/repositories/UserRepository';
 import { Logger, LoggerInterface } from '../decorators/Logger';
 import { env } from '../env';
+import acl from './acl';
 
 @Service()
 export class AuthService {
@@ -37,15 +40,22 @@ export class AuthService {
     public jwtAuthenticate(cb: (user: any) => void): express.RequestHandler {
         const passportEntity = this.passportInitialize();
         return (request: express.Request, response: express.Response, next) => {
-            passportEntity.authenticate('jwt', { session: false }, (err, user, info) => {
+            passportEntity.authenticate('jwt', { session: false }, (err, user) => {
                 cb(user);
                 next();
             })(request, response, next);
         };
     }
 
-    public authChecker({ root, args, context, info }: any, roles: string[]): boolean {
-        return context.user && context.user.id; // or false if access denied
+    public async authChecker({ context: { user } }: any, perms: Permission | any): Promise<boolean> {
+        const isAuthenticated = user && !!user.id;
+        let isAllowed = false;
+        if (isAuthenticated && perms && user.roles) {
+            for (const userRole of user.roles) {
+                isAllowed = isAllowed || await acl.isAllowed(userRole, perms[0].resources, perms[0].permissions);
+            }
+        }
+        return isAuthenticated && isAllowed;
     }
 
     public async validateUser(email: string, password: string): Promise<User> {
@@ -58,8 +68,8 @@ export class AuthService {
         return undefined;
     }
 
-    public generateJWT(payload: any): string {
-        return jwt.sign(payload, env.auth.jwt_secret);
+    public generateJWT(user: User): string {
+        return jwt.sign(pick(['id', 'email', 'roles'], user), env.auth.jwt_secret);
     }
 
     public passportInitialize(): passport.PassportStatic {
