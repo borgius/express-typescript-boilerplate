@@ -37,16 +37,6 @@ export class AuthService {
         return undefined;
     }
 
-    public jwtAuthenticate(cb: (user: any) => void): express.RequestHandler {
-        const passportEntity = this.passportInitialize();
-        return (request: express.Request, response: express.Response, next) => {
-            passportEntity.authenticate('jwt', { session: false }, (err, user) => {
-                cb(user);
-                next();
-            })(request, response, next);
-        };
-    }
-
     public async authChecker({ context: { user } }: any, perms: Permission[] | any): Promise<boolean> {
         const isAuthenticated = user && !!user.id;
         let isAllowed = false || perms.length === 0;
@@ -74,6 +64,16 @@ export class AuthService {
         return jwt.sign(pick(['id', 'email', 'roles'], user), env.auth.jwt_secret);
     }
 
+    public jwtAuthenticate(cb: (user: any) => void): express.RequestHandler {
+        const passportEntity = this.passportInitialize();
+        return (request: express.Request, response: express.Response, next) => {
+            passportEntity.authenticate('jwt', { session: false }, (err, user) => {
+                cb(user);
+                next();
+            })(request, response, next);
+        };
+    }
+
     public passportInitialize(): passport.PassportStatic {
         passport.use(this.passportStrategy());
         passport.initialize();
@@ -87,14 +87,14 @@ export class AuthService {
         };
 
         return new Strategy(params, async (payload, done) => {
-            let user: User;
-            if (payload.id && payload.email) {
-                user = await this.userRepository.findOne({
-                    where: { id: payload.id, email: payload.email },
-                    relations: ['organization'],
-                });
-            }
-            return done(undefined, user);
+            // let user: User;
+            // if (payload.id && payload.email) {
+            //     user = await this.userRepository.findOne({
+            //         select: ['id', 'email', 'roles'],
+            //         where: { id: payload.id, email: payload.email },
+            //     });
+            // }
+            return done(undefined, payload as User);
         });
     }
 

@@ -4,6 +4,7 @@ import { bootstrapMicroframework } from 'microframework-w3tec';
 
 import { banner } from './lib/banner';
 import { Logger } from './lib/logger';
+import { authLoader } from './loaders/authLoader';
 import { eventDispatchLoader } from './loaders/eventDispatchLoader';
 import { expressLoader } from './loaders/expressLoader';
 import { graphqlLoader } from './loaders/graphqlLoader';
@@ -36,6 +37,7 @@ bootstrapMicroframework({
         eventDispatchLoader,
         typeormLoader,
         expressLoader,
+        authLoader,
         swaggerLoader,
         monitorLoader,
         homeLoader,

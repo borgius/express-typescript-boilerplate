@@ -19,7 +19,7 @@ export class UserResolver {
     @Authorized()
     @Query(returns => User)
     public async me(@Ctx() ctx: Context): Promise<User> {
-        return ctx.user as User;
+        return this.userService.findOne(ctx.user.id);
     }
 
     @Acl(RP.user.get)
@@ -30,8 +30,11 @@ export class UserResolver {
     }
 
     @Mutation(returns => String)
-    public async login(@Arg('email') email: string, @Arg('password') password: string): Promise<any> {
+    public async login(
+        @Arg('email') email: string,
+        @Arg('password') password: string
+        ): Promise<any> {
         const user = await this.authService.validateUser(email, password);
-        return this.authService.generateJWT(user);
+        return `Bearer ${this.authService.generateJWT(user)}`;
     }
 }

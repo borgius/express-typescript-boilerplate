@@ -15,7 +15,6 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
 
         const expressApp = settings.getData('express_app');
         const authService = Container.get<AuthService>(AuthService);
-        let authUser;
 
         const schema = await buildSchema({
             resolvers: env.app.dirs.resolvers,
@@ -25,14 +24,14 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
         });
         handlingErrors(schema);
 
-        expressApp.use(env.graphql.route, authService.jwtAuthenticate(user => authUser = user));
-
         // Add graphql layer to the express app
         expressApp.use(env.graphql.route, (request: express.Request, response: express.Response) => {
             // Build GraphQLContext
             const requestId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER); // uuid-like
             const container = Container.of(requestId); // get scoped container
-            const context: Context = { requestId, container, request, response, user: authUser }; // create our context
+            const context: Context = { requestId, container, request, response,
+                user: settings.getData('user'),
+            }; // create our context
 
             container.set('context', context); // place context or other data in container
 
