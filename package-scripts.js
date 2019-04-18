@@ -340,7 +340,7 @@ function run(path) {
 }
 
 function runFast(path) {
-    return `ts-node --transpileOnly ${path}`;
+    return `ts-node --transpile-only ${path}`;
 }
 
 async function runOnPort(path, port) {

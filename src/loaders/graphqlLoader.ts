@@ -19,6 +19,7 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
         const schema = await buildSchema({
             resolvers: env.app.dirs.resolvers,
             authChecker: authService.authChecker,
+            container: Container,
             // automatically create `schema.gql` file with schema definition in current folder
             emitSchemaFile: path.resolve(__dirname, '../api', 'schema.gql'),
         });

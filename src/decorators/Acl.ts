@@ -1,5 +1,5 @@
 import { Authorized } from 'type-graphql';
-import { MethodAndPropDecorator } from 'type-graphql/decorators/types';
+import { MethodAndPropDecorator } from 'type-graphql/dist/decorators/types';
 
 import { Permission } from '../api/interfaces/acl';
 
